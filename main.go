@@ -15,7 +15,7 @@ var autoDetect bool
 
 var rootCmd = &cobra.Command{
 	Use:   "goignore",
-	Short: "A lightweight CLI tool to generate .gitignore files",
+	Short: "A lightweight CLI tool for generating .gitignore files",
 }
 
 var newCmd = &cobra.Command{
@@ -55,12 +55,19 @@ var newCmd = &cobra.Command{
 
 		// Generate and write the .gitignore file
 		err = generateGitignore(templateContent)
+
 		if err != nil {
 			color.Red("Error generating .gitignore:", err)
 			return
 		}
 
-		color.Green("Generated .gitignore for %s", language)
+		path, err := filepath.Abs(".gitignore")
+		if err != nil {
+			color.Red("Error getting absolute path:", err)
+			return
+		}
+
+		color.Green("Generated .gitignore for %s in path: %s", language, path)
 	},
 }
 
