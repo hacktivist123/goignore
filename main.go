@@ -21,7 +21,7 @@ var newCmd = &cobra.Command{
 	Short: "Generate and add .gitignore file to your project",
 	Run: func(cmd *cobra.Command, args []string) {
 		if language == "" {
-			fmt.Println("Please provide a programming language.")
+			color.Red("Please provide a programming language.")
 			return
 		}
 
@@ -56,10 +56,27 @@ var newCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(newCmd)
+	rootCmd.AddCommand(listCmd)
+
 	newCmd.PersistentFlags().StringVarP(&language, "language", "l", "", "Programming language for .gitignore file")
 	newCmd.MarkPersistentFlagRequired("language")
 }
 
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List all supported programming languages",
+	Run: func(cmd *cobra.Command, args []string) {
+		supportedLanguages := getSupportedLanguages()
+		color.Cyan("Supported programming languages:")
+		for _, lang := range supportedLanguages {
+			fmt.Println("-", lang)
+		}
+	},
+}
+
+func getSupportedLanguages() []string {
+	return []string{"python", "javascript", "golang", "c++"}
+}
 func main() {
 	rootCmd.Execute()
 }
