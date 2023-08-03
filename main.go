@@ -5,25 +5,21 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
-func main() {
-	var rootCmd = &cobra.Command{
-		Use:   "goignore",
-		Short: "A lightweight CLI tool to generate .gitignore files",
-	}
+var language string
 
-	rootCmd.AddCommand(newCmd)
-	rootCmd.Execute()
+var rootCmd = &cobra.Command{
+	Use:   "goignore",
+	Short: "A lightweight CLI tool to generate .gitignore files",
 }
 
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Generate and add .gitignore file to your project",
 	Run: func(cmd *cobra.Command, args []string) {
-		language, _ := cmd.Flags().GetString("language")
-
 		if language == "" {
 			fmt.Println("Please provide a programming language.")
 			return
@@ -32,10 +28,10 @@ var newCmd = &cobra.Command{
 		// Check if .git repo exists, if not initialize it
 		_, err := os.Stat(".git")
 		if err != nil {
-			fmt.Println("Initializing a new Git repository...")
+			color.Yellow("Initializing a new Git repository...")
 			err := execCommand("git", "init")
 			if err != nil {
-				fmt.Println("Error initializing Git repository:", err)
+				color.Red("Error initializing Git repository:", err)
 				return
 			}
 		}
@@ -43,23 +39,33 @@ var newCmd = &cobra.Command{
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
 		if err != nil {
-			fmt.Println("Error reading template file:", err)
+			color.Red("Error reading template file:", err)
 			return
 		}
 
 		// Generate and write the .gitignore file
 		err = generateGitignore(templateContent)
 		if err != nil {
-			fmt.Println("Error generating .gitignore:", err)
+			color.Red("Error generating .gitignore:", err)
 			return
 		}
 
-		fmt.Printf("Generated .gitignore for %s\n", language)
+		color.Green("Generated .gitignore for %s", language)
 	},
 }
 
+func init() {
+	rootCmd.AddCommand(newCmd)
+	newCmd.PersistentFlags().StringVarP(&language, "language", "l", "", "Programming language for .gitignore file")
+	newCmd.MarkPersistentFlagRequired("language")
+}
+
+func main() {
+	rootCmd.Execute()
+}
+
 func readTemplateFile(language string) (string, error) {
-	templatePath := fmt.Sprintf("templates/%s.txt", language)
+	templatePath := fmt.Sprintf("gitignore_templates/%s.txt", language)
 	content, err := os.ReadFile(templatePath)
 	if err != nil {
 		return "", err
