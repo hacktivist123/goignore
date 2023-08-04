@@ -9,6 +9,7 @@
 </div>
 
 ## Installation
+### Using Package
 
 To use `goignore`, you need to have Go (Golang) installed on your system. If you haven't installed Go, you can download and install it from the [official website](https://golang.org/doc/install).
 
@@ -51,6 +52,21 @@ To list all supported programming languages for generating .gitignore files, you
 goignore list
 ````
 This will display a list of supported programming languages.
+
+### Without installing package
+Clone repo to your local directory with the command 
+```sh
+git clone https://github.com/hacktivist123/goignore.git
+```
+Get the executable goignore file by running the command
+```sh
+go build ./goignore/cmd/goignore
+```
+A goignore executable file should be generated for you, you can run all the commands outlined above but this time prepend it with `./`. 
+Example:
+```sh
+./goingore list
+```
 
 ## Contributing
 Contributions to goignore are welcome! If you encounter any issues, have suggestions, or want to contribute improvements, please open an issue or submit a pull request on the GitHub repository.
