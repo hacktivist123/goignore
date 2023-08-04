@@ -1,4 +1,4 @@
-//go:generate go run github.com/hacktivist123/goignore
+//go:generate go run github.com/hacktivist123/goignore/cmd/goignore
 package main
 
 import (
