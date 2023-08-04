@@ -11,6 +11,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var extensions = map[string][]string{
+	"golang": {".go"},
+	"javascript": {".js", ".ts", ".tsx"},
+	"python": {".py"},
+	"c++": {".cpp", ".h"},
+	"rust": {".rs"},
+	"ruby": {".rb"},
+	"c": {".c"},
+	"haskell": {".hs"},
+}
+
 var language string
 var autoDetect bool
 
@@ -91,26 +102,28 @@ func detectLanguage() string {
 	}
 
 	for _, file := range files {
-		if !file.IsDir() {
-			ext := filepath.Ext(file.Name())
-			if ext == ".go" {
-				return "golang"
-			} else if ext == ".js" || ext == ".ts" || ext == ".tsx" {
-				return "javaScript"
-			} else if ext == ".py" {
-				return "python"
-			} else if ext == ".cpp" || ext == ".h" {
-				return "c++"
+		if file.IsDir() {
+			continue
+		}
+		ext := filepath.Ext(file.Name())
+		for lang, exts := range extensions{
+			for _, e := range exts {
+				if ext == e {
+					return lang
+				}
 			}
 		}
 	}
-
 	return ""
 }
 
 func getSupportedLanguages() []string {
-	// Add any additional supported languages here
-	return []string{"python", "javascript", "golang", "c++"}
+	result := []string{}
+
+	for lang := range extensions {
+		result = append(result, lang)
+	}
+	return result
 }
 
 func init() {
