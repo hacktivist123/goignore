@@ -24,6 +24,14 @@ Go pkg:
 go get -u github.com/hacktivist123/goignore/cmd/goignore@latest
 ```
 ## Usage
+
+## Auto-Detecting Language
+If you want goignore to automatically detect the programming language based on the files in your project directory, you can run the following command:
+
+```sh
+goignore new
+```
+
 ### Generating .gitignore File
 To generate a .gitignore file for a specific programming language, you can use the following command:
 
@@ -38,12 +46,7 @@ goignore new --language=python
 ```
 You can also use the -l shorthand for the --language flag.
 
-## Auto-Detecting Language
-If you want goignore to automatically detect the programming language based on the files in your project directory, you can use the auto keyword:
 
-```sh
-goignore new --language=auto
-```
 
 ## Listing Supported Languages
 To list all supported programming languages for generating .gitignore files, you can use the following command:
@@ -74,7 +77,7 @@ Example:
 
 - [ ] Allow users to choose to initialize the git repo in their folder
 
-- [ ] Use `goignore new` to auto-detect language and scrap `goignore new language=auto`
+- [x] Use `goignore new` to auto-detect language and scrap `goignore new language=auto`
 
 - [ ] Github actions to build main.go file and automatically create an executable file that can be downloaded
 
