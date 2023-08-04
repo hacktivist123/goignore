@@ -54,7 +54,7 @@ goignore list
 This will display a list of supported programming languages.
 
 ### Without installing package
-Clone repo to your local directory with the command 
+Clone repo to your local directory with the command
 ```sh
 git clone https://github.com/hacktivist123/goignore.git
 ```
@@ -62,11 +62,21 @@ Get the executable goignore file by running the command
 ```sh
 go build ./goignore/cmd/goignore
 ```
-A goignore executable file should be generated for you, you can run all the commands outlined above but this time prepend it with `./`. 
+A goignore executable file should be generated for you, you can run all the commands outlined above but this time prepend it with `./`.
 Example:
 ```sh
 ./goingore list
 ```
+
+## Todo for Upcoming Release
+
+[] - Interactive mode
+[] - Allow users choose to initialize git repo in their folder
+[] - Use `goignore new` to auto detect language and scrap `goignore new language=auto`
+[] - Github actions to build main.go file and automatically create a excutable file that can be downloaded
+[] - Unit tests for all functions (should be part of github actions workflow)
+[] - Other installation options i.e brew, scoop and npm
+[] - Setup GoReleaser
 
 ## Contributing
 Contributions to goignore are welcome! If you encounter any issues, have suggestions, or want to contribute improvements, please open an issue or submit a pull request on the GitHub repository.
