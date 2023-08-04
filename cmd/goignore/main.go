@@ -48,6 +48,17 @@ var newCmd = &cobra.Command{
 			}
 		}
 
+		// Check if .git repo exists, if not initialize it
+		// _, err := os.Stat(".git")
+		// if err != nil {
+		// 	color.Yellow("Initializing a new Git repository...")
+		// 	err := execCommand("git", "init")
+		// 	if err != nil {
+		// 		color.Red("Error initializing Git repository:", err)
+		// 		return
+		// 	}
+		// }
+
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
 		if err != nil {
