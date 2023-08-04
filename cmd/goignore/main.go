@@ -161,7 +161,7 @@ func main() {
 }
 
 func readTemplateFile(language string) (string, error) {
-	templatePath := fmt.Sprintf("templates/%s.txt", language)
+	templatePath := fmt.Sprintf("./templates/%s.txt", language)
 	content, err := os.ReadFile(templatePath)
 	if err != nil {
 		return "", err

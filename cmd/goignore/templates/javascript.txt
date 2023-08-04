@@ -9,7 +9,8 @@
 /dist
 
 # misc
-env*.local
+.env
+.env.local
 /.cache
 /log
 *.log
