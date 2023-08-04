@@ -1,4 +1,4 @@
-package main
+package goignore
 
 import (
 	"fmt"
@@ -139,7 +139,7 @@ func init() {
 	}
 }
 
-func main() {
+func goignore() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
