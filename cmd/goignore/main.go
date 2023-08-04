@@ -3,7 +3,9 @@ package main
 
 import (
 	"embed"
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -61,8 +63,14 @@ var newCmd = &cobra.Command{
 
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
+
+		// if the language template doesnt exist
+		if errors.Is(err, fs.ErrNotExist) {
+			err = fmt.Errorf("Language '%s' not supported", language)
+		}
+
 		if err != nil {
-			color.Red("Error reading template file:", err)
+			color.Red("Error: %s", err)
 			return
 		}
 
