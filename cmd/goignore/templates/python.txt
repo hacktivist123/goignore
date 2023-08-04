@@ -66,3 +66,7 @@ celerybeat-schedule
 # env
 .env
 .env.local
+
+# macOS specific files
+.DS_Store
+profile
