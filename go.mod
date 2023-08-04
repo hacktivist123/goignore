@@ -1,4 +1,4 @@
-module goignore
+module github.com/hacktivist123/goignore
 
 go 1.20
 
