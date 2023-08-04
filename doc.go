@@ -8,4 +8,4 @@
 //	goigbore new -l=[auto]       Automatically detect files in the project repo and generate .gitignore
 //
 // For more information, check out the GitHub repository: https://github.com/hacktivist123/goignore
-package goignore
+package main
