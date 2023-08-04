@@ -1,0 +1,59 @@
+# Goignore Build Configuration
+
+builds:
+  - binary: goignore
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -mod=vendor
+    #ldflags:
+      #- -s -w -X goignore/cmd/utils.CLI_VERSION={{.Version}}
+
+release:
+  prerelease: auto
+
+universal_binaries:
+  - replace: true
+
+archives:
+  - id: foo
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+
+
+checksum:
+  name_template: "checksums.txt"
+
+brews:
+  - name: goignore
+    homepage: https://github.com/hacktivist123/goignore
+    tap:
+      owner: hacktivist123
+      name: homebrew-brew
+    commit_author:
+      name: hacktivist123
+      email: akintayoshedrack@gmail.com
+
+scoop:
+  url_template: "https://github.com/hacktivist123/goignore/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+  bucket:
+    owner: hacktivist123
+    name: scoop-goignore
+  folder: scoops
+  commit_author:
+    name: hacktivist123
+    email: akintayoshedrack@gmail.com
+  #commit_msg_template: "Update goignore to version {{ .Tag }}"
+  homepage: "https://github.com/hacktivist123/goignore"
+  description: "A lightweight CLI tool for generating .gitignore file in your project."
