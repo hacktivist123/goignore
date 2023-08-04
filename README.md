@@ -2,6 +2,10 @@
 
 `goignore` is a lightweight Command Line Interface (CLI) tool for generating `.gitignore` files based on the programming language you're using. It helps you easily create `.gitignore` files for your projects by either specifying a programming language or automatically detecting it from the files in your project directory.
 
+<div align="center">
+![](images/demo.png)
+</div>
+
 ## Installation
 
 To use `goignore`, you need to have Go (Golang) installed on your system. If you haven't installed Go, you can download and install it from the [official website](https://golang.org/doc/install).
