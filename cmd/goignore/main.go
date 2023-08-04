@@ -1,4 +1,5 @@
-package goignore
+//go:generate go run github.com/hacktivist123/goignore
+package main
 
 import (
 	"fmt"
@@ -139,7 +140,7 @@ func init() {
 	}
 }
 
-func goignore() {
+func main() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
