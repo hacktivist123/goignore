@@ -48,3 +48,7 @@ profile
 # Windows specific files
 Thumbs.db
 Desktop.ini
+
+# env
+.env
+.env.local

@@ -63,3 +63,6 @@ celerybeat-schedule
 
 # SageMath parsed files
 *.
+# env
+.env
+.env.local
