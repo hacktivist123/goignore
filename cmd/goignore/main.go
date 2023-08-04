@@ -49,15 +49,15 @@ var newCmd = &cobra.Command{
 		}
 
 		// Check if .git repo exists, if not initialize it
-		_, err := os.Stat(".git")
-		if err != nil {
-			color.Yellow("Initializing a new Git repository...")
-			err := execCommand("git", "init")
-			if err != nil {
-				color.Red("Error initializing Git repository:", err)
-				return
-			}
-		}
+		// _, err := os.Stat(".git")
+		// if err != nil {
+		// 	color.Yellow("Initializing a new Git repository...")
+		// 	err := execCommand("git", "init")
+		// 	if err != nil {
+		// 		color.Red("Error initializing Git repository:", err)
+		// 		return
+		// 	}
+		// }
 
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
@@ -97,25 +97,25 @@ var listCmd = &cobra.Command{
 }
 
 func detectLanguage() string {
-	files, err := os.ReadDir(".")
-	if err != nil {
-		return ""
-	}
-
-	for _, file := range files {
-		if file.IsDir() {
-			continue
-		}
-		ext := filepath.Ext(file.Name())
+	fileExt := "" 
+	err := filepath.WalkDir(".", func(path string, d os.DirEntry, err error) error {
+        if err != nil {
+            return err
+        }
+		ext := filepath.Ext(path)
 		for lang, exts := range extensions {
 			for _, e := range exts {
 				if ext == e {
-					return lang
+					fileExt = lang
 				}
 			}
 		}
-	}
-	return ""
+		return nil
+    })
+    if err != nil {
+        return ""
+    }
+	return fileExt
 }
 
 func getSupportedLanguages() []string {
