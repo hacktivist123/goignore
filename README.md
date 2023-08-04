@@ -70,13 +70,19 @@ Example:
 
 ## Todo for Upcoming Release
 
-[] - Interactive mode
-[] - Allow users choose to initialize git repo in their folder
-[] - Use `goignore new` to auto detect language and scrap `goignore new language=auto`
-[] - Github actions to build main.go file and automatically create a excutable file that can be downloaded
-[] - Unit tests for all functions (should be part of github actions workflow)
-[] - Other installation options i.e brew, scoop and npm
-[] - Setup GoReleaser
+- [ ] Interactive mode
+
+- [ ] Allow users to choose to initialize the git repo in their folder
+
+- [ ] Use `goignore new` to auto-detect language and scrap `goignore new language=auto`
+
+- [ ] Github actions to build main.go file and automatically create an executable file that can be downloaded
+
+- [ ] Unit tests for all functions (should be part of GitHub actions workflow)
+
+- [ ] Other installation options i.e brew, scoop and npm
+
+- [ ] Setup GoReleaser
 
 ## Contributing
 Contributions to goignore are welcome! If you encounter any issues, have suggestions, or want to contribute improvements, please open an issue or submit a pull request on the GitHub repository.
