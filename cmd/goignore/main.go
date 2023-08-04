@@ -105,7 +105,7 @@ var listCmd = &cobra.Command{
 
 func detectLanguage() string {
 	// struct to store file extension
-	var languagePercentage map[string]int
+	languagePercentage := make(map[string]int)
 
 	err := filepath.WalkDir(".", func(path string, d os.DirEntry, err error) error {
 		if err != nil {
