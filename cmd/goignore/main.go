@@ -1,4 +1,4 @@
-//go:generate go run github.com/hacktivist123/goignore/cmd/goignore
+//go:generate go run github.com/hacktivist123/goignore/
 package main
 
 import (
@@ -12,14 +12,14 @@ import (
 )
 
 var extensions = map[string][]string{
-	"golang": {".go"},
+	"golang":     {".go"},
 	"javascript": {".js", ".ts", ".tsx"},
-	"python": {".py"},
-	"c++": {".cpp", ".h"},
-	"rust": {".rs"},
-	"ruby": {".rb"},
-	"c": {".c"},
-	"haskell": {".hs"},
+	"python":     {".py"},
+	"c++":        {".cpp", ".h"},
+	"rust":       {".rs"},
+	"ruby":       {".rb"},
+	"c":          {".c"},
+	"haskell":    {".hs"},
 }
 
 var language string
@@ -106,7 +106,7 @@ func detectLanguage() string {
 			continue
 		}
 		ext := filepath.Ext(file.Name())
-		for lang, exts := range extensions{
+		for lang, exts := range extensions {
 			for _, e := range exts {
 				if ext == e {
 					return lang
