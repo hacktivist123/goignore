@@ -1,4 +1,4 @@
-//go:generate go run github.com/hacktivist123/goignore
+//go:generate go run github.com/hacktivist123/goignore/cmd/goignore
 package main
 
 import (
@@ -148,7 +148,7 @@ func main() {
 }
 
 func readTemplateFile(language string) (string, error) {
-	templatePath := fmt.Sprintf("templates/%s.txt", language)
+	templatePath := fmt.Sprintf("./templates/%s.txt", language)
 	content, err := os.ReadFile(templatePath)
 	if err != nil {
 		return "", err
