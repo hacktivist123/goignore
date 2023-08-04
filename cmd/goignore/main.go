@@ -3,9 +3,10 @@ package main
 
 import (
 	"embed"
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
-	"os/exec"
 	"path/filepath"
 
 	"github.com/fatih/color"
@@ -35,12 +36,7 @@ var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Generate and add .gitignore file to your project",
 	Run: func(cmd *cobra.Command, args []string) {
-		if language == "" && !autoDetect {
-			color.Red("Please provide a programming language.")
-			return
-		}
-
-		if autoDetect {
+		if language == "" || autoDetect {
 			language = detectLanguage()
 			if language == "" {
 				color.Red("Unable to auto-detect programming language. Please provide a language manually.")
@@ -48,7 +44,12 @@ var newCmd = &cobra.Command{
 			}
 		}
 
-		// Check if .git repo exists, if not initialize it
+		if language == "" {
+			color.Red("Please provide a programming language.")
+			return
+		}
+
+		// // Check if .git repo exists, if not initialize it
 		// _, err := os.Stat(".git")
 		// if err != nil {
 		// 	color.Yellow("Initializing a new Git repository...")
@@ -61,8 +62,14 @@ var newCmd = &cobra.Command{
 
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
+
+		// if the language template does not exist
+		if errors.Is(err, fs.ErrNotExist) {
+			err = fmt.Errorf("language '%s' not supported", language)
+		}
+
 		if err != nil {
-			color.Red("Error reading template file:", err)
+			color.Red("Error: %s", err)
 			return
 		}
 
@@ -97,11 +104,11 @@ var listCmd = &cobra.Command{
 }
 
 func detectLanguage() string {
-	fileExt := "" 
+	fileExt := ""
 	err := filepath.WalkDir(".", func(path string, d os.DirEntry, err error) error {
-        if err != nil {
-            return err
-        }
+		if err != nil {
+			return err
+		}
 		ext := filepath.Ext(path)
 		for lang, exts := range extensions {
 			for _, e := range exts {
@@ -111,10 +118,10 @@ func detectLanguage() string {
 			}
 		}
 		return nil
-    })
-    if err != nil {
-        return ""
-    }
+	})
+	if err != nil {
+		return ""
+	}
 	return fileExt
 }
 
@@ -126,32 +133,12 @@ func getSupportedLanguages() []string {
 	}
 	return result
 }
-
 func init() {
 	rootCmd.AddCommand(newCmd)
 	rootCmd.AddCommand(listCmd)
 
-	// Define the 'language' flag for the newCmd
-	newCmd.Flags().StringVarP(&language, "language", "l", "", "Programming language for .gitignore file (use 'auto' for auto-detection)")
-
-	// Set PersistentPreRun function to handle flag validation and auto-detection
-	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
-		// Skip flag validation for the 'list' command
-		if cmd.Name() != listCmd.Name() {
-			if language == "" {
-				fmt.Println("Error: Please provide a programming language or use 'auto' for auto-detection.")
-				os.Exit(1)
-			}
-
-			if language == "auto" {
-				language = detectLanguage()
-				if language == "" {
-					fmt.Println("Error: Unable to auto-detect programming language. Please provide a language manually.")
-					os.Exit(1)
-				}
-			}
-		}
-	}
+	// Define the 'language' and 'auto-detect' flags for the newCmd
+	newCmd.Flags().StringVarP(&language, "language", "l", "", "Programming language for .gitignore file")
 }
 
 func main() {
@@ -188,9 +175,9 @@ func generateGitignore(content string) error {
 	return nil
 }
 
-func execCommand(command string, args ...string) error {
-	cmd := exec.Command(command, args...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
+// func execCommand(command string, args ...string) error {
+// 	cmd := exec.Command(command, args...)
+// 	cmd.Stdout = os.Stdout
+// 	cmd.Stderr = os.Stderr
+// 	return cmd.Run()
+// }
