@@ -15,9 +15,13 @@ To use `goignore`, you need to have Go (Golang) installed on your system. If you
 Once you have Go installed, you can install `goignore` using the following command:
 
 ```sh
-go install github.com/hacktivist123/goignore
+go install github.com/hacktivist123/goignore/cmd/goignore
 ```
 
+Go pkg:
+```sh
+go get -u github.com/hacktivist123/goignore/cmd/goignore
+```
 ## Usage
 ### Generating .gitignore File
 To generate a .gitignore file for a specific programming language, you can use the following command:
