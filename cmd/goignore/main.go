@@ -2,6 +2,7 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"os"
 	"os/exec"
@@ -160,9 +161,12 @@ func main() {
 	}
 }
 
+//go:embed templates/*.txt
+var templateFiles embed.FS
+
 func readTemplateFile(language string) (string, error) {
-	templatePath := fmt.Sprintf("./templates/%s.txt", language)
-	content, err := os.ReadFile(templatePath)
+	templatePath := fmt.Sprintf("templates/%s.txt", language)
+	content, err := templateFiles.ReadFile(templatePath)
 	if err != nil {
 		return "", err
 	}
