@@ -116,21 +116,24 @@ func init() {
 	rootCmd.AddCommand(newCmd)
 	rootCmd.AddCommand(listCmd)
 
-	// Define the 'language' flag
+	// Define the 'language' flag for the newCmd
 	newCmd.Flags().StringVarP(&language, "language", "l", "", "Programming language for .gitignore file (use 'auto' for auto-detection)")
 
 	// Set PersistentPreRun function to handle flag validation and auto-detection
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
-		if language == "" {
-			fmt.Println("Error: Please provide a programming language or use 'auto' for auto-detection.")
-			os.Exit(1)
-		}
-
-		if language == "auto" {
-			language = detectLanguage()
+		// Skip flag validation for the 'list' command
+		if cmd.Name() != listCmd.Name() {
 			if language == "" {
-				fmt.Println("Error: Unable to auto-detect programming language. Please provide a language manually.")
+				fmt.Println("Error: Please provide a programming language or use 'auto' for auto-detection.")
 				os.Exit(1)
+			}
+
+			if language == "auto" {
+				language = detectLanguage()
+				if language == "" {
+					fmt.Println("Error: Unable to auto-detect programming language. Please provide a language manually.")
+					os.Exit(1)
+				}
 			}
 		}
 	}
