@@ -16,3 +16,11 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# env
+.env
+.env.local
+
+# macOS specific files
+.DS_Store
+profile
