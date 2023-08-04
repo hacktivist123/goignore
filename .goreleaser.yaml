@@ -40,7 +40,7 @@ brews:
     homepage: https://github.com/hacktivist123/goignore
     tap:
       owner: hacktivist123
-      name: homebrew-brew
+      name: homebrew-goignore
     commit_author:
       name: hacktivist123
       email: akintayoshedrack@gmail.com
