@@ -3,6 +3,7 @@ OSES=linux darwin windows
 ARCHS=arm64 amd64
 SRCS=$(shell find . -iname '*.go')
 ALLSRCS=$(SRCS) version/version.go
+UNAME_S := $(shell uname -s)
 
 default: $(ALLSRCS)
 	go build ./cmd/goignore
@@ -39,6 +40,7 @@ endef
 
 $(foreach os,$(OSES), $(foreach arch, $(ARCHS), $(eval $(call make-target,$(os),$(arch)))))
 
+ifeq ($(UNAME_S),Darwin)
 _build/$(VERSION)/darwin_universal/goignore: _build/$(VERSION)/darwin_amd64/goignore _build/$(VERSION)/darwin_arm64/goignore | _build
 	-mkdir _build/$(VERSION)/darwin_universal
 	lipo -create -output $@ $+
@@ -49,6 +51,7 @@ _build/$(VERSION)/goignore_$(VERSION)_darwin_universal.tar.gz: _build/$(VERSION)
 	tar -zcf _build/$(VERSION)/goignore_$(VERSION)_darwin_universal.tar.gz -C _build/$(VERSION)/darwin_universal goignore
 
 archive:: _build/$(VERSION)/goignore_$(VERSION)_darwin_universal.tar.gz
+endif
 
 clean:
 	-rm -rf _build version/version.go
