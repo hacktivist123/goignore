@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/fatih/color"
@@ -26,6 +27,7 @@ var extensions = map[string][]string{
 }
 
 var language string
+var gitInit bool
 var autoDetect bool
 
 var appFs = afero.NewOsFs()
@@ -52,16 +54,15 @@ var newCmd = &cobra.Command{
 			return
 		}
 
-		// // Check if .git repo exists, if not initialize it
-		// _, err := os.Stat(".git")
-		// if err != nil {
-		// 	color.Yellow("Initializing a new Git repository...")
-		// 	err := execCommand("git", "init")
-		// 	if err != nil {
-		// 		color.Red("Error initializing Git repository:", err)
-		// 		return
-		// 	}
-		// }
+		// if the init flag was passed, initilaize git repository
+		if cmd.Flags().Changed("init") {
+			err := initializeGitRepo()
+			if err != nil {
+				color.Red("Error %s", err)
+			}
+			// return
+		}
+
 
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
@@ -107,16 +108,24 @@ var listCmd = &cobra.Command{
 }
 
 func detectLanguage(fs afero.Fs) string {
-	fileExt := ""
-	err := afero.Walk(fs, "." , func(path string, dir os.FileInfo, err error) error {
+	// struct to store file extension
+	languagePercentage := make(map[string]int)
+
+	err := afero.Walk(".", func(path string, d os.DirEntry, err error) error {
+
 		if err != nil {
 			return err
 		}
+
 		ext := filepath.Ext(path)
 		for lang, exts := range extensions {
 			for _, e := range exts {
 				if ext == e {
-					fileExt = lang
+					if languagePercentage[lang] > 0 {
+						languagePercentage[lang]++
+					} else {
+						languagePercentage[lang] = 1
+					}
 				}
 			}
 		}
@@ -125,7 +134,21 @@ func detectLanguage(fs afero.Fs) string {
 	if err != nil {
 		return ""
 	}
+	// get the one with highest occurrence
+	fileExt := highestOccurrence(languagePercentage)
 	return fileExt
+}
+
+func highestOccurrence(data map[string]int) string {
+	language := ""
+	languageValue := 0
+	for key, value := range data {
+		if value > languageValue {
+			languageValue = value
+			language = key
+		}
+	}
+	return language
 }
 
 func getSupportedLanguages() []string {
@@ -136,12 +159,15 @@ func getSupportedLanguages() []string {
 	}
 	return result
 }
+
 func init() {
 	rootCmd.AddCommand(newCmd)
 	rootCmd.AddCommand(listCmd)
 
 	// Define the 'language' and 'auto-detect' flags for the newCmd
 	newCmd.Flags().StringVarP(&language, "language", "l", "", "Programming language for .gitignore file")
+	newCmd.Flags().BoolVarP(&gitInit, "init", "i", false, "initializes a git repository in the current directory if it doesn't exist")
+
 }
 
 func main() {
@@ -178,9 +204,25 @@ func generateGitignore(fs afero.Fs, content string) error {
 	return nil
 }
 
-// func execCommand(command string, args ...string) error {
-// 	cmd := exec.Command(command, args...)
-// 	cmd.Stdout = os.Stdout
-// 	cmd.Stderr = os.Stderr
-// 	return cmd.Run()
-// }
+func initializeGitRepo() error {
+	_, err := os.Stat(".git")
+
+	// if .git directory does not exist
+	if errors.Is(err, os.ErrNotExist) {
+		color.Yellow("Initializing an empty Git repository...")
+		err = execCommand("git", "init") // $ git init
+	}
+
+	if err != nil {
+		return fmt.Errorf("Failed to initialize Git repository: %s", err.Error())
+	}
+
+	return nil
+}
+
+func execCommand(command string, args ...string) error {
+	cmd := exec.Command(command, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}

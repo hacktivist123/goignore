@@ -23,9 +23,25 @@ Go pkg:
 ```sh
 go get -u github.com/hacktivist123/goignore/cmd/goignore@latest
 ```
+
+### Without installing package
+Clone repo to your local directory with the command
+```sh
+git clone https://github.com/hacktivist123/goignore.git
+```
+Get the executable goignore file by running the command
+```sh
+go build ./goignore/cmd/goignore
+```
+A goignore executable file should be generated for you, you can run all the commands outlined above but this time prepend it with `./`.
+Example:
+```sh
+./goingore list
+```
+
 ## Usage
 
-## Auto-Detecting Language
+### Auto-Detecting Language
 If you want goignore to automatically detect the programming language based on the files in your project directory, you can run the following command:
 
 ```sh
@@ -46,36 +62,27 @@ goignore new --language=python
 ```
 You can also use the -l shorthand for the --language flag.
 
+### Initializing a git repo and a gitignore
+If you want a gitignore file and a new git repository at the same time, you can do this by running the following command
 
-
-## Listing Supported Languages
+```sh
+gitignore new --init
+```
+You can also use the -i shorthand for the --init flag.
+### Listing Supported Languages
 To list all supported programming languages for generating .gitignore files, you can use the following command:
 
 ```sh
 goignore list
 ````
-This will display a list of supported programming languages.
 
-### Without installing package
-Clone repo to your local directory with the command
-```sh
-git clone https://github.com/hacktivist123/goignore.git
-```
-Get the executable goignore file by running the command
-```sh
-go build ./goignore/cmd/goignore
-```
-A goignore executable file should be generated for you, you can run all the commands outlined above but this time prepend it with `./`.
-Example:
-```sh
-./goingore list
-```
+This will display a list of supported programming languages.
 
 ## Todo for Upcoming Release
 
 - [ ] Interactive mode
 
-- [ ] Allow users to choose to initialize the git repo in their folder
+- [x] Allow users to choose to initialize the git repo in their folder
 
 - [x] Use `goignore new` to auto-detect language and scrap `goignore new language=auto`
 
