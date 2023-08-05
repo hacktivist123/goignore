@@ -111,7 +111,7 @@ func detectLanguage(fs afero.Fs) string {
 	// struct to store file extension
 	languagePercentage := make(map[string]int)
 
-	err := afero.Walk(fs, ".", func(path string, d os.DirEntry, err error) error {
+	err := afero.Walk(fs, ".", func(path string, dir os.FileInfo, err error) error {
 
 		if err != nil {
 			return err
