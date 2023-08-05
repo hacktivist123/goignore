@@ -88,7 +88,7 @@ This will display a list of supported programming languages.
 
 - [ ] Github actions to build main.go file and automatically create an executable file that can be downloaded
 
-- [ ] Unit tests for all functions (should be part of GitHub actions workflow)
+- [x] Unit tests for all functions (should be part of GitHub actions workflow)
 
 - [ ] Other installation options i.e brew, scoop and npm
 
