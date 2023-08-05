@@ -75,7 +75,7 @@ Example:
 
 - [ ] Interactive mode
 
-- [ ] Allow users to choose to initialize the git repo in their folder
+- [x] Allow users to choose to initialize the git repo in their folder
 
 - [x] Use `goignore new` to auto-detect language and scrap `goignore new language=auto`
 
