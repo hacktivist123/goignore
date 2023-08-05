@@ -46,20 +46,14 @@ goignore new --language=python
 ```
 You can also use the -l shorthand for the --language flag.
 
-## Initializing a git repo and a gitignore
-If you want a gitignore file and a new git repository at the same time, you can do this by running the following command
 
-```sh
-gitignore new --init
-```
-You can also use the -i shorthand for the --init flag.
+
 ## Listing Supported Languages
 To list all supported programming languages for generating .gitignore files, you can use the following command:
 
 ```sh
 goignore list
 ````
-
 This will display a list of supported programming languages.
 
 ### Without installing package
