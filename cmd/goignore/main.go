@@ -104,16 +104,23 @@ var listCmd = &cobra.Command{
 }
 
 func detectLanguage() string {
-	fileExt := ""
+	// struct to store file extension
+	languagePercentage := make(map[string]int)
+
 	err := filepath.WalkDir(".", func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
+
 		ext := filepath.Ext(path)
 		for lang, exts := range extensions {
 			for _, e := range exts {
 				if ext == e {
-					fileExt = lang
+					if languagePercentage[lang] > 0 {
+						languagePercentage[lang]++
+					} else {
+						languagePercentage[lang] = 1
+					}
 				}
 			}
 		}
@@ -122,7 +129,21 @@ func detectLanguage() string {
 	if err != nil {
 		return ""
 	}
+	// get the one with highest occurrence
+	fileExt := highestOccurrence(languagePercentage)
 	return fileExt
+}
+
+func highestOccurrence(data map[string]int) string {
+	language := ""
+	languageValue := 0
+	for key, value := range data {
+		if value > languageValue {
+			languageValue = value
+			language = key
+		}
+	}
+	return language
 }
 
 func getSupportedLanguages() []string {
