@@ -11,6 +11,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"github.com/spf13/afero"
 )
 
 var extensions = map[string][]string{
@@ -27,6 +28,8 @@ var extensions = map[string][]string{
 var language string
 var autoDetect bool
 
+var appFs = afero.NewOsFs()
+
 var rootCmd = &cobra.Command{
 	Use:   "goignore",
 	Short: "A lightweight CLI tool for generating .gitignore files",
@@ -37,7 +40,7 @@ var newCmd = &cobra.Command{
 	Short: "Generate and add .gitignore file to your project",
 	Run: func(cmd *cobra.Command, args []string) {
 		if language == "" || autoDetect {
-			language = detectLanguage()
+			language = detectLanguage(appFs)
 			if language == "" {
 				color.Red("Unable to auto-detect programming language. Please provide a language manually.")
 				return
@@ -74,7 +77,7 @@ var newCmd = &cobra.Command{
 		}
 
 		// Generate and write the .gitignore file
-		err = generateGitignore(templateContent)
+		err = generateGitignore(appFs, templateContent)
 
 		if err != nil {
 			color.Red("Error generating .gitignore:", err)
@@ -103,9 +106,9 @@ var listCmd = &cobra.Command{
 	},
 }
 
-func detectLanguage() string {
+func detectLanguage(fs afero.Fs) string {
 	fileExt := ""
-	err := filepath.WalkDir(".", func(path string, d os.DirEntry, err error) error {
+	err := afero.Walk(fs, "." , func(path string, dir os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -160,8 +163,8 @@ func readTemplateFile(language string) (string, error) {
 	return string(content), nil
 }
 
-func generateGitignore(content string) error {
-	file, err := os.Create(".gitignore")
+func generateGitignore(fs afero.Fs, content string) error {
+	file, err := fs.Create(".gitignore")
 	if err != nil {
 		return err
 	}
