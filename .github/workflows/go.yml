@@ -35,5 +35,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: goignore-executables
-        path: _build/*/*.tar.gz,_build/*/*.zip
+        path: _build/*/*.*
       #if: github.event_name == 'push' && github.ref == 'refs/heads/main'
