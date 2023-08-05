@@ -92,7 +92,7 @@ This will display a list of supported programming languages.
 
 - [ ] Other installation options i.e brew, scoop and npm
 
-- [ ] Setup GoReleaser
+- [x] Setup GoReleaser
 
 ## Contributing
 Contributions to goignore are welcome! If you encounter any issues, have suggestions, or want to contribute improvements, please open an issue or submit a pull request on the GitHub repository.
