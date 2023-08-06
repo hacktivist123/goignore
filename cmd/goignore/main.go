@@ -13,6 +13,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
+	"github.com/spf13/afero"
 )
 
 var extensions = map[string][]string{
@@ -69,6 +70,7 @@ var newCmd = &cobra.Command{
 			}
 			// return
 		}
+
 
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
