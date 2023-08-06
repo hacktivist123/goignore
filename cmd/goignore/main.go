@@ -222,7 +222,7 @@ func initializeGitRepo() error {
 	}
 
 	if err != nil {
-		return fmt.Errorf("Failed to initialize Git repository: %s", err.Error())
+		return fmt.Errorf("failed to initialize Git repository: %s", err.Error())
 	}
 
 	return nil
