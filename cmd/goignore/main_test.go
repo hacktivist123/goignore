@@ -8,8 +8,15 @@ import (
 
 func TestDetectLanguage(t *testing.T) {
 	testFs := afero.NewMemMapFs()
-	testFs.Mkdir("src/", 0755)
-	testFs.Create("src/test.go")
+	if err := testFs.Mkdir("src/", 0755); err != nil {
+		t.Fatalf("Error creating directory: %v", err)
+	}
+	file, err := testFs.Create("src/test.go")
+	if err != nil {
+		t.Fatalf("Error creating file: %v", err)
+	}
+	defer file.Close()
+	
 	t.Log(testFs.Name())
 
 	want := "golang"
@@ -18,13 +25,6 @@ func TestDetectLanguage(t *testing.T) {
 	if want != answer {
 		t.Fatalf("Wanted %s, got %s", want, answer)
 	}
-
-	// return testFS error value when an error occur
-	err := testFs
-	if err != nil {
-		t.Fatalf("an error occured: %s", err)
-	}
-
 }
 
 func TestGenerateGitignore(t *testing.T) {
