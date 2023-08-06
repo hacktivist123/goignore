@@ -24,3 +24,7 @@
 # macOS specific files
 .DS_Store
 profile
+
+#build output
+version/version.go
+_build
