@@ -26,3 +26,12 @@ jobs:
       
     - name: Test
       run: go test -C cmd/goignore -v ./...
+
+    - name: Build and Archive
+      run: make all archive
+
+    - name: Upload Archives
+      uses: actions/upload-artifact@v2
+      with:
+        name: goignore-executables
+        path: _build/*/*.*
