@@ -1,4 +1,4 @@
-VERSION=1.0.4
+VERSION=1.0.3
 OSES=linux darwin windows
 ARCHS=arm64 amd64
 SRCS=$(shell find . -iname '*.go')
