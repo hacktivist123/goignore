@@ -1,9 +1,10 @@
 package main
+
 import (
 	"testing"
+
 	"github.com/spf13/afero"
 )
-
 
 func TestDetectLanguage(t *testing.T) {
 	testFs := afero.NewMemMapFs()
@@ -13,9 +14,15 @@ func TestDetectLanguage(t *testing.T) {
 
 	want := "golang"
 	answer := detectLanguage(testFs)
-	
+
 	if want != answer {
 		t.Fatalf("Wanted %s, got %s", want, answer)
+	}
+
+	// return testFS error value when an error occur
+	err := testFs
+	if err != nil {
+		t.Fatalf("an error occured: %s", err)
 	}
 
 }
@@ -32,7 +39,7 @@ func TestGenerateGitignore(t *testing.T) {
 	if !exists {
 		t.Fatalf("Wanted %v, got %v", want, exists)
 	}
-	
+
 }
 
 func TestGetSupportedLanguages(t *testing.T) {
