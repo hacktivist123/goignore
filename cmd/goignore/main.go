@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 
 	"github.com/fatih/color"
-	"github.com/spf13/cobra"
 	"github.com/spf13/afero"
+	"github.com/spf13/cobra"
 )
 
 var extensions = map[string][]string{
@@ -40,6 +40,13 @@ var rootCmd = &cobra.Command{
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Generate and add .gitignore file to your project",
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		// Check if there are any unexpected arguments
+		if len(args) > 0 {
+			return fmt.Errorf("unexpected arguments: %v", args)
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if language == "" || autoDetect {
 			language = detectLanguage(appFs)
@@ -62,7 +69,6 @@ var newCmd = &cobra.Command{
 			}
 			// return
 		}
-
 
 		// Read .gitignore template content from file
 		templateContent, err := readTemplateFile(language)
