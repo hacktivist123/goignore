@@ -86,7 +86,7 @@ This will display a list of supported programming languages.
 
 - [x] Use `goignore new` to auto-detect language and scrap `goignore new language=auto`
 
-- [ ] Github actions to build main.go file and automatically create an executable file that can be downloaded
+- [x] Github actions to build main.go file and automatically create an executable file that can be downloaded
 
 - [x] Unit tests for all functions (should be part of GitHub actions workflow)
 
