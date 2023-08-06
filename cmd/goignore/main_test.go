@@ -1,23 +1,30 @@
 package main
+
 import (
 	"testing"
+
 	"github.com/spf13/afero"
 )
 
-
 func TestDetectLanguage(t *testing.T) {
 	testFs := afero.NewMemMapFs()
-	testFs.Mkdir("src/", 0755)
-	testFs.Create("src/test.go")
+	if err := testFs.Mkdir("src/", 0755); err != nil {
+		t.Fatalf("Error creating directory: %v", err)
+	}
+	file, err := testFs.Create("src/test.go")
+	if err != nil {
+		t.Fatalf("Error creating file: %v", err)
+	}
+	defer file.Close()
+	
 	t.Log(testFs.Name())
 
 	want := "golang"
 	answer := detectLanguage(testFs)
-	
+
 	if want != answer {
 		t.Fatalf("Wanted %s, got %s", want, answer)
 	}
-
 }
 
 func TestGenerateGitignore(t *testing.T) {
@@ -32,7 +39,7 @@ func TestGenerateGitignore(t *testing.T) {
 	if !exists {
 		t.Fatalf("Wanted %v, got %v", want, exists)
 	}
-	
+
 }
 
 func TestGetSupportedLanguages(t *testing.T) {
