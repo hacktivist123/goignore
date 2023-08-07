@@ -15,8 +15,9 @@ func TestDetectLanguage(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error creating file: %v", err)
 	}
+
 	defer file.Close()
-	
+
 	t.Log(testFs.Name())
 
 	want := "golang"
