@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// supported languages
 var extensions = map[string][]string{
 	"golang":     {".go"},
 	"javascript": {".js", ".ts", ".tsx"},
@@ -28,17 +29,21 @@ var extensions = map[string][]string{
 	"java":       {".java"},
 }
 
+// global variables
 var language string
 var gitInit bool
 var autoDetect bool
 
+// Afero testing library
 var appFs = afero.NewOsFs()
 
+// Root cobra command
 var rootCmd = &cobra.Command{
 	Use:   "goignore",
 	Short: "A lightweight CLI tool for generating .gitignore files",
 }
 
+// the defintion for the goignore new command
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Generate and add .gitignore file to your project",
@@ -80,6 +85,7 @@ var newCmd = &cobra.Command{
 			err = fmt.Errorf("language '%s' not supported", language)
 		}
 
+		// error handling
 		if err != nil {
 			color.Red("Error: %s", err)
 			return
@@ -88,11 +94,13 @@ var newCmd = &cobra.Command{
 		// Generate and write the .gitignore file
 		err = generateGitignore(appFs, templateContent)
 
+		// error handling
 		if err != nil {
 			color.Red("Error generating .gitignore:", err)
 			return
 		}
 
+		// display path for generated .gitignore file
 		path, err := filepath.Abs(".gitignore")
 		if err != nil {
 			color.Red("Error getting absolute path:", err)
@@ -115,6 +123,7 @@ var listCmd = &cobra.Command{
 	},
 }
 
+// function for auto-detecting PLanguages based on the highest occuring file extentions
 func detectLanguage(fs afero.Fs) string {
 	// struct to store file extension
 	languagePercentage := make(map[string]int)
@@ -147,6 +156,7 @@ func detectLanguage(fs afero.Fs) string {
 	return fileExt
 }
 
+// get the highest occuring language
 func highestOccurrence(data map[string]int) string {
 	language := ""
 	languageValue := 0
@@ -159,6 +169,7 @@ func highestOccurrence(data map[string]int) string {
 	return language
 }
 
+// pull all supported languages
 func getSupportedLanguages() []string {
 	result := []string{}
 
@@ -168,6 +179,7 @@ func getSupportedLanguages() []string {
 	return result
 }
 
+// initialize all CLI commands
 func init() {
 	rootCmd.AddCommand(newCmd)
 	rootCmd.AddCommand(listCmd)
@@ -178,6 +190,7 @@ func init() {
 
 }
 
+// excute root command
 func main() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -188,6 +201,7 @@ func main() {
 //go:embed templates/*.txt
 var templateFiles embed.FS
 
+// pull supported language .gitingore template
 func readTemplateFile(language string) (string, error) {
 	templatePath := fmt.Sprintf("templates/%s.txt", language)
 	content, err := templateFiles.ReadFile(templatePath)
@@ -197,6 +211,7 @@ func readTemplateFile(language string) (string, error) {
 	return string(content), nil
 }
 
+// generate .gitignore file based on the provided language
 func generateGitignore(fs afero.Fs, content string) error {
 	file, err := fs.Create(".gitignore")
 	if err != nil {
@@ -228,6 +243,7 @@ func initializeGitRepo() error {
 	return nil
 }
 
+// execute command to generate .git file for user
 func execCommand(command string, args ...string) error {
 	cmd := exec.Command(command, args...)
 	cmd.Stdout = os.Stdout
