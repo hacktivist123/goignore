@@ -8,10 +8,10 @@ RUN apk add --no-cache git
 
 # Clone the repository and build the goignore executable
 RUN git clone https://github.com/hacktivist123/goignore . && \
-  go build -o /go/bin/goignore ./cmd/goignore
+  CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/goignore ./cmd/goignore
 
 # goignore Container Image
-FROM alpine:latest
+FROM scratch
 
 # Maintainer info
 LABEL org.opencontainers.image.authors="Shedrack Akintayo" \
@@ -24,4 +24,4 @@ WORKDIR /goignore
 COPY --from=builder /go/bin/goignore /usr/local/bin/goignore
 
 # Set the entrypoint
-ENTRYPOINT [ "goignore" ]
+ENTRYPOINT [ "/usr/local/bin/goignore" ]
