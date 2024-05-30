@@ -1,5 +1,8 @@
 [![Made in Nigeria](https://img.shields.io/badge/made%20in-nigeria-008751.svg?style=flat-square)](https://github.com/acekyd/made-in-nigeria)
 
+![](https://img.shields.io/docker/pulls/coderblvck/goignore
+)
+
 # goignore
 
 `goignore` is a lightweight Command Line Interface (CLI) tool for generating `.gitignore` files based on the programming language you're using. It helps you easily create `.gitignore` files for your projects by either specifying a programming language or automatically detecting it from the files in your project directory.
@@ -40,6 +43,7 @@ Example:
 ```sh
 ./goingore list
 ```
+
 
 ## Usage
 
