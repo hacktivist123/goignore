@@ -23,7 +23,7 @@ go install github.com/hacktivist123/goignore/cmd/goignore
 
 Go pkg:
 ```sh
-go get -u github.com/hacktivist123/goignore/cmd/goignore@latest
+go get -u github.com/hacktivist123/goignore/cmd/goignore
 ```
 
 ### Without installing package
