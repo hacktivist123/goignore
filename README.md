@@ -44,6 +44,9 @@ Example:
 ./goingore list
 ```
 
+## Docker
+
+You can find the official Docker image [here](https://hub.docker.com/repository/docker/coderblvck/goignore)
 
 ## Usage
 
